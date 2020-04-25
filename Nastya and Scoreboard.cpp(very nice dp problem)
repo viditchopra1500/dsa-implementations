@@ -1,0 +1,67 @@
+string num[10]={"1110111", "0010010", "1011101", "1011011", "0111010", "1101011", "1101111", "1010010", "1111111", "1111011"};
+vector<string> s;
+ll n;
+ll dp[2000][2001];
+
+ll isValid(string a,ll b){
+    ll used=0;
+    forn(i,8){
+        if(a[i]!=num[b][i]){
+            if(a[i]=='0'){
+                used++;
+            }
+            else{
+                return INF;
+            }
+        }
+    }
+    return used;
+}
+vll an;
+ll rec(ll pos,ll left){
+    if(pos==n){
+        if(left==0) return 1;
+        else return 0;
+    }
+    if(dp[pos][left]!=-1) return dp[pos][left];
+    forr(i,10){
+            ll used=isValid(s[pos],i);
+            bool valid=false;
+            if(used<=left){
+                valid|=rec(pos+1,left-used);
+                if(valid){
+                    an.pb(i);
+                    return dp[pos][left]=1;
+                }
+            }
+        }
+        return dp[pos][left]=0;
+    }
+
+int main()
+{fast;
+    ll k;
+    read(n,k);
+    s=vector<string>(n);
+    forn(i,n){
+        read(s[i]);
+    }
+    ini(dp,-1);
+    ll ans=rec(0,k);
+    if(ans==1){
+        string str="";
+        for(auto u:an){
+            str+=itos(u);
+        }
+        reverse(all(str));
+        cout<<str<<"\n";
+        // cout<<"\n";
+    }
+    else{
+        cout<<-1;
+    }
+}
+
+//what i have done --> i want my recursive function to return if i can form a sequence using exact k sticks . 
+//Now as i have iterated in reverse order ie 9,8,7,6... so the first number 
+//that gets true is the max number only.Now i return the answer as soon as i get the sequence formed it is stored in an vector.
