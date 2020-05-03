@@ -1,0 +1,47 @@
+//calculating the fee is kind of new but -->it is also kind of dp . 
+//Its like for the each state we are calculating what is the minimum i have to pay for the the max fun
+
+
+ll n,m;
+vvll dp,fee;
+vll cost,fun;
+ll ans=0;
+ll ma=0;
+ll rec(ll pos,ll left){
+    if(pos>=m) return 0;
+    if(left==n) return 0;
+    if(dp[pos][left]!=-1) return dp[pos][left];
+    ll a=0,b=0;
+    if(left+cost[pos]<=n){
+        a=rec(pos+1,left+cost[pos])+fun[pos];
+    }
+        b=rec(pos+1,left);
+        if(a>b){
+            fee[pos][left]=fee[pos+1][left+cost[pos]]+cost[pos];
+        }
+        else if(a==b){
+            fee[pos][left]=min(fee[pos+1][left],fee[pos+1][left+cost[pos]]+cost[pos]);
+        }
+        else{
+            fee[pos][left]=fee[pos+1][left];
+        }
+    return dp[pos][left]=max(a,b);
+
+}
+
+int main()
+{
+    while(1){
+read(n,m);
+if(n==0&&m==0) break;
+cost=vll(m);
+fun=vll(m);
+fee=vvll(m+1,vll(n+1,0));
+forn(i,m){
+    read(cost[i],fun[i]);
+}
+dp=vvll(m,vll(n+1,-1));
+ll ans=rec(0,0);
+cout<<fee[0][0]<<" "<<ans<<"\n";
+}
+}
