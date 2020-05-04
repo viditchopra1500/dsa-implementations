@@ -1,0 +1,34 @@
+//1)nice problem we have to again just go to the basics and figure that from my current state 
+//  i have to see what is the best length of subsequence in decreasing order that i can get.
+//2)Now the answer can be starting from any pos as any pos can be the starting pos.
+
+vll arr;
+ll n;
+vll dp;
+ll rec(ll pos){
+    if(pos>=n){
+        return 0;
+    }
+    if(dp[pos]!=-1) return dp[pos];
+    ll ma=1;
+    forab(i,pos,n,1){
+        if(arr[pos]<arr[i])
+            ma=max(rec(i)+1,ma);
+    }
+    return dp[pos]=ma;
+}
+
+int main()
+{fast;
+    read(n);
+    arr=vll(n);
+    dp=vll(n,-1);
+    forn(i,n){
+        read(arr[i]);
+    }
+    ll ma=0;
+    forn(i,n){
+        ma=max(rec(i),ma);
+    }
+    cout<<ma;
+}
