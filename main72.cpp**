@@ -1,5 +1,5 @@
-//nice problem but its very similar to what we do with vis array in dfs here if i dp at pos and given sum
-//if already visted then i dont need to go down ...
+//nice problem but its very similar to what we do with vis array in dfs here if dp at pos and given sum
+//is already visted then i dont need to go down ...
 
 ll n,sm;
 vll arr;
