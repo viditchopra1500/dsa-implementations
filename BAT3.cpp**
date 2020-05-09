@@ -1,0 +1,41 @@
+//good question like elis the subsequence can start from any position so needed a for in main too
+//now simply if i==m and if we take it we get a power to make an uphill jump
+
+ll n,m;
+vll arr;
+vvll dp;
+ll rec(ll pos,ll pow){
+    if(pos>=n) return 0;
+    ll ma=1;
+    if(dp[pos][pow]!=-1) return dp[pos][pow];
+    forab(i,pos+1,n,1){
+        if(pow==1&&arr[pos]<=arr[i]){
+            ma=max(ma,rec(i,0)+1);
+        }
+        if(arr[pos]>arr[i]){
+            if(i==m){
+                ma=max(ma,rec(i,1)+1);
+            }
+            else{
+                ma=max(ma,rec(i,0)+1);
+            }
+        }
+    }
+    return dp[pos][pow]=ma;
+}
+
+
+int main()
+{fast;
+    test{
+        read(n,m);
+        arr=vll(n);
+        read(arr,n);
+        ll ma=0;
+        dp=vvll(n+1,vll(2,-1));
+        forn(i,n){
+            ma=max(ma,rec(i,0));
+        }
+        cout<<ma<<"\n";
+    }
+}
