@@ -2,6 +2,7 @@
 //  i have to see what is the best length of subsequence in decreasing order that i can get.
 //2)Now the answer can be starting from any pos as any pos can be the starting pos.
 
+// FOR BETTER SOL SCROLL DOWN
 vll arr;
 ll n;
 vll dp;
@@ -32,3 +33,25 @@ int main()
     }
     cout<<ma;
 }
+
+//Arguably the better way to solve this problem --(just do some dp stuff too ,no needed in this prob as easy constraints)
+                                                 | 
+                                              <--|   
+ll n;
+vll arr;
+ll rec(ll pos,ll num){
+    if(pos>=n)
+        return 0;
+    ll ma;
+    if(arr[pos]>num)
+        ma=max(rec(pos+1,arr[pos])+1,rec(pos+1,num));
+    else
+        ma=rec(pos+1,num);
+    return ma;
+}
+int main(){
+        read(n);
+        arr=vll(n);
+        read(arr,n);
+       cout<< rec(0,0);
+    }
