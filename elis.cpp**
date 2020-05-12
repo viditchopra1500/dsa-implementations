@@ -37,6 +37,8 @@ int main()
 //Arguably the better way to solve this problem --(just do some dp stuff too ,no needed in this prob as easy constraints)
                                                  | 
                                               <--|   
+//here I just want my function to return the max possible increasing subsequence from that starting point and every number 
+//which is greater than num(previos max) we take it or leave it.
 ll n;
 vll arr;
 ll rec(ll pos,ll num){
