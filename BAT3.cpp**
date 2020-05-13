@@ -39,3 +39,43 @@ int main()
         cout<<ma<<"\n";
     }
 }
+
+
+//though this one didnt pass but its better now why i need a variable like num becoze i need to know what was the previous max
+//now initially i have taken its value as num=-1.
+
+ll n,m;
+vll arr;
+ll dp[1001][1002][2];
+ll solve(ll i,ll num,ll pow){
+    if(i>=n)
+        return 0;
+    ll ans=0;
+    if(dp[i][num+1][pow]!=-1) return dp[i][num+1][pow];
+    ll a=pow;
+    if(i==m) a=1;
+    if(num==-1) 
+        {
+            ans=max(solve(i+1,-1,0),solve(i+1,i,a)+1);
+        }
+    if(arr[i]<arr[num]){
+            ans=max(solve(i+1,i,a)+1,solve(i+1,num,pow));
+    }
+    else if(arr[num]<=arr[i]&&pow==1){
+        ans=max(solve(i+1,i,0)+1,solve(i+1,num,1));
+        // deb(i);
+    }
+    return dp[i][num+1][pow]=ans;
+}
+
+
+
+int main(){
+    fast;
+    test{
+        read(n,m);
+        arr=vll(n);
+        read(arr,n);
+        ini(dp,-1);
+        cout<<solve(0,-1,0)<<"\n";
+    }
