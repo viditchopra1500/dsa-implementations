@@ -2,7 +2,8 @@
 //  i have to see what is the best length of subsequence in decreasing order that i can get.
 //2)Now the answer can be starting from any pos as any pos can be the starting pos.
 
-// FOR BETTER SOL SCROLL DOWN
+// BOTH ARE GOOD BUT IN 2 THERE WILL BE MORE FUNCTION CALLS SO POSSIBLE TLE CHANCES MORE..
+
 vll arr;
 ll n;
 vll dp;
@@ -11,8 +12,8 @@ ll rec(ll pos){
         return 0;
     }
     if(dp[pos]!=-1) return dp[pos];
-    ll ma=1;
-    forab(i,pos,n,1){
+    ll ma=0;
+    forab(i,pos+1,n-1,1){               // its just like dfs what are the states of going from i to.....
         if(arr[pos]<arr[i])
             ma=max(rec(i)+1,ma);
     }
@@ -23,18 +24,18 @@ int main()
 {fast;
     read(n);
     arr=vll(n);
-    dp=vll(n,-1);
+    dp=vll(n+1,-1);
     forn(i,n){
         read(arr[i]);
     }
-    ll ma=0;
+    ll ma=1;
     forn(i,n){
-        ma=max(rec(i),ma);
+        ma=max(rec(i)+1,ma);
     }
     cout<<ma;
 }
 
-//Arguably the better way to solve this problem --(just do some dp stuff too ,no needed in this prob as easy constraints)
+//Another way to solve this problem --(just do some dp stuff too ,no needed in this prob as easy constraints)
                                                  | 
                                               <--|   
 //here I just want my function to return the max possible increasing subsequence from that starting point and every number 
