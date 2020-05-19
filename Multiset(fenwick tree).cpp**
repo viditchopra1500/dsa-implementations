@@ -1,0 +1,67 @@
+ll N;
+vll fen;
+void update(ll i,ll add){
+    while(i>0&&i<=N){
+        fen[i]+=add;
+        i+=(i&(-i));
+    }
+}
+
+ll sum(ll i){
+    ll s=0;
+    while(i>0){
+        s+=fen[i];
+        i-=(i&(-i));
+    }
+    return s;
+}
+
+
+int main()
+{   fast;
+        ll q;
+        read(N,q);
+        fen=vll(N+1,0);
+        forn(i,N){
+            ll a;
+            read(a);
+            update(a,1);
+        }
+        // cout<<sum(1);
+
+        while(q--){
+            ll a;
+            read(a);
+            if(a>0){
+                update(a,1);
+            }
+            else{
+                a*=-1;
+                ll l=1,r=N,mid;
+                while(l<r){
+                    mid=(r+l)/2;
+                    ll s=sum(mid);
+                    if(s>=a){
+                        r=mid;
+                    }
+                    else
+                        l=mid+1;
+                }
+                update(l,-1);
+            }
+        }
+        if(sum(N)==0) cout<<0;
+        else{
+            int low = 0, high = N,ans=sum(N);
+            while (low < high)
+            {
+                int mid = (low + high) / 2;
+                int val = sum(mid);
+ 
+                if (ans <= val)
+                    high = mid;
+                else
+                    low = mid + 1;
+            }
+            cout<<low;
+        }}
