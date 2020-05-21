@@ -1,0 +1,54 @@
+ll fen[MAXN];
+void updateFent(ll i, ll add) {         
+    while (i > 0 && i < MAXN)
+    {
+        fen[i] += add;
+        i += (i & (-i));
+    }
+}
+//sum till i index.
+ll queryFent(ll i) {
+    ll s = 0;
+    while (i > 0)
+    {
+        s += fen[i];
+        i = i - (i & (-i));
+    }
+    return s;
+}
+
+ll rangeSumQueryFent(ll l,ll r){
+    return(queryFent(r)-queryFent(l-1));
+}
+
+
+int main()
+{
+    fast;
+    ll n;
+    read(n);
+    ll arr[n],temp[n];
+    forn(i,n){
+        read(arr[i]);
+        temp[i]=arr[i];
+    }
+    sort(temp,temp+n);
+    forn(i,n){                                         //to transform numbers to their relative values
+        arr[i]=lower_bound(temp,temp+n,arr[i])-temp+1;
+    }
+    ll greater_than[n],less_than[n];
+    forr(i,n){                                         //find arr[i] is greater than how many elements
+        greater_than[i]=queryFent(arr[i]-1);           //or how many elements are less than it.
+        updateFent(arr[i],1);
+    }
+    ini(fen,0);
+    forn(i,n){
+        less_than[i]=rangeSumQueryFent(arr[i],n+1);   //find arr[i] is less than how many elements
+        updateFent(arr[i],1);                         //or how many elements are greater than it.
+    }ll ans=0;
+    forn(i,n){
+        ans+=less_than[i]*greater_than[i];
+    }
+    cout<<ans<<"\n";
+}
+
