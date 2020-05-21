@@ -1,0 +1,97 @@
+
+ll  segt[4*MAXN],lazy[4*MAXN];          //ini them to 0 in main()
+vll arr10;                               //array containing elements(initialize it)
+
+
+//v is the current node and [tl..tr] is range of current node
+void buildSegt(ll v, ll tl, ll tr) {
+    if (tl == tr) {
+        segt[v] = arr10[tl];
+    } else {
+        ll tm = (tl + tr) / 2;
+        buildSegt(v*2, tl, tm);       //building the left subtree.
+        buildSegt(v*2+1, tm+1, tr);   //building the right subtree.
+        segt[v] = segt[v*2] + segt[v*2+1];  //updating the value at current node after building left and right subtree.
+    }
+}
+
+
+//l...r is the query.
+ll queryLazySegt(ll v,ll tl,ll tr,ll l,ll r)
+{
+
+    if(lazy[v]!=0){                    // it tells the node is not up to date right now.
+        segt[v]+=(tr-tl+1)*lazy[v];    //normalizing current node by removing laziness.
+        if(tl!=tr){
+            lazy[2*v]+=lazy[v];        //update lazy for children.
+            lazy[2*v+1]+=lazy[v];
+        }
+        lazy[v]=0;                    //current node processed no longer lazy
+    }
+    if(tl>tr || tl>r || tr<l)
+    {
+        return 0;
+    }
+    if(tl>=l && tr<=r)
+    {
+        return segt[v];
+    }
+
+    ll tm=(tr-tl)/2+tl;
+    return (queryLazySegt(v*2,tl,tm,l,r)
+        +queryLazySegt(v*2+1,tm+1,tr,l,r));
+}
+
+
+//very similar to queryLazySegt.
+void updateSegt(ll v, ll tl, ll tr, ll l, ll r, ll add) {
+
+    if(lazy[v]!=0){                    //if already it is lazy so normalizing it.
+        segt[v]+=(tr-tl+1)*lazy[v];    
+        if(tl!=tr){
+            lazy[2*v]+=lazy[v];        
+            lazy[2*v+1]+=lazy[v];
+        }
+        lazy[v]=0;                    
+    }
+    if(tl>tr || tl>r || tr<l)
+    {
+        return;
+    }
+    if(tl>=l && tr<=r)
+    {
+        segt[v]+=(tr-tl+1)*add;    //stop here and update laziness of children so dont have to go further.
+        if(tl!=tr)
+        {
+            lazy[2*v]+=add;
+            lazy[2*v+1]+=add;
+        }
+        return ;
+    }
+        ll tm = ( tr-tl) / 2+tl;
+        updateSegt(v*2, tl, tm, l, r, add);
+        updateSegt(v*2+1, tm+1, tr, l, r, add);
+        segt[v]=segt[2*v]+segt[2*v+1];
+}
+int main()
+{   fast;
+    test{
+    ll n,c;
+    read(n,c);
+    ini(segt,0),ini(lazy,0);
+    arr10=vll(n+1);
+    while(c--)
+    {
+        ll a,p,q,v;
+        read(a);
+        if(a==0){
+            read(p,q,v);
+            updateSegt(1,1,n,p,q,v);
+        }
+        else{
+            read(p,q);
+            cout<<queryLazySegt(1,1,n,p,q)<<"\n";
+        }
+    }
+}}
+
