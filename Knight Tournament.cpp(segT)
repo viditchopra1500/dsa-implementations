@@ -1,0 +1,62 @@
+//Here I didnt use lazy propogation as not needed(learn by doing )
+ll segt[4*MAXN],lazy[4*MAXN];
+vll arr10;                               
+
+
+void updateSegt(ll v, ll tl, ll tr, ll l, ll r, ll add) {     //range update.
+
+    if(segt[v]!=0){                    
+    return;                
+    }
+        if(tl>tr || tl>r || tr<l)
+    {
+        return;
+    }
+    if(tl>=l && tr<=r)
+    {
+        segt[v]=add;    
+        return ;
+    }
+        ll tm = ( tr-tl) / 2+tl;
+        updateSegt(v*2, tl, tm, l, r, add);
+        updateSegt(v*2+1, tm+1, tr, l, r, add);
+}
+ll ans;
+ll queryLazySegt(ll v,ll tl,ll tr,ll l,ll r)            //even if not range updates in use we can use queryLazySeg as lazy[v]==0
+{
+
+    if(tl>tr || tl>r || tr<l)
+    {
+        return 0;
+    }
+    if(tl>=l && tr<=r)
+    {
+        ll m=segt[v];
+        if(m!=0) ans=m;
+        return segt[v];
+    }
+
+    ll tm=(tr-tl)/2+tl;
+    ll m=segt[v];
+    if(m!=0) ans=m;
+    return (queryLazySegt(v*2,tl,tm,l,r)
+        +queryLazySegt(v*2+1,tm+1,tr,l,r));
+}
+
+
+int main()
+{   ll n,m;
+    read(n,m);
+    while(m--){
+        ll l,r,x;
+        read(l,r,x);
+        updateSegt(1,1,n,x+1,r,x);
+        updateSegt(1,1,n,l,x-1,x);
+    }
+    for1(i,n){
+        ans=0;
+        queryLazySegt(1,1,n,i,i);
+        cout<<ans<<" ";
+    }
+
+}
