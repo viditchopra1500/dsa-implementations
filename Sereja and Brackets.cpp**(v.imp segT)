@@ -1,0 +1,88 @@
+typedef pair<ll,pll>   node;
+
+#define x first
+#define y second
+ll segt[4*MAXN],open[4*MAXN],closed[4*MAXN],lazy[4*MAXN];
+string s;
+
+void buildSegt(ll v, ll tl, ll tr) {
+    if (tl == tr) {
+        if(s[tl-1]=='('){
+            open[v]=1;
+            closed[v]=0;
+        }
+        else{
+            closed[v]=1;
+            open[v]=0;
+        }
+
+    } else {
+        ll tm = (tl + tr) / 2;
+        buildSegt(v*2, tl, tm);       
+        buildSegt(v*2+1, tm+1, tr);
+        ll tem=min(open[v*2],closed[v*2+1]);
+        open[v]=open[2*v]+open[2*v+1]-tem;
+        closed[v]=closed[2*v]+closed[2*v+1]-tem;   
+        segt[v] = segt[v*2] + segt[v*2+1]+tem;  
+    }
+}
+
+
+node queryLazySegt(ll v,ll tl,ll tr,ll l,ll r)          
+{
+    if(tl>tr || tl>r || tr<l)
+    {
+        return {0,{0,0}};
+    }
+    if(tl>=l && tr<=r)
+    {
+        return {segt[v],{open[v],closed[v]}};
+    }
+
+    ll tm=(tr-tl)/2+tl;
+    node a=queryLazySegt(v*2,tl,tm,l,r);
+    node b=  queryLazySegt(v*2+1,tm+1,tr,l,r);
+        int t, tem, op, clo;
+    tem = min(a.y.x , b.y.y);
+    t = a.x + b.x + tem;
+    op = a.y.x + b.y.x - tem;
+        clo = a.y.y + b.y.y - tem;
+    return node(t,pll(op,clo));    
+}
+
+
+int main()
+{
+    fast;
+    read(s);
+    ll n=s.length();
+    buildSegt(1,1,n);
+    ll q;
+    read(q);
+    while(q--){
+        ll l,r;
+        read(l,r);
+        cout<<2*queryLazySegt(1,1,n,l,r).x<<"\n";
+    }
+}
+
+So I hope you now know that each node of a segment tree stores information of a continuous interval and obviously root 
+stores information for the whole range.
+So what we need to store in nodes in this case to quickly query ??
+Obviously we will store what is the maximum length of correctly matched bracket subsequence but what will happen when we
+will move up and merge the two child nodes information to parent. How we will update parent using information of children ?? 
+This point is very important as it decides what further information needs to be stored.
+So its very obvious (although not so 😛 ) that left child will have some unmatched ‘(‘ braces and right child will 
+have some ‘)’ unmatched and they both have their individual subsequences of CMB (correctly matched braces). So for parent 
+node we can calculate its longest CMB subsequence as
+Longest CMB for parent = Longest CMB for left child + Longest CMB for right child
++min(unmatched left child ‘(‘ , unmatched right child ‘)’ )
+
+while(quertying also we need to do merging as segment tree nodes ranges are of 0-2 2-4 4-6 etc but if i want 2-3
+So for it is not stored so we have to again merge our data ie for left child how many open and for right child how many 
+closed then only i can give right answer
+
+So now its clear what should we store in a node
+1. count of unmatched ‘(‘ braces
+2. count of unmatched ‘)’ braces
+3. length of subsequence of CMB
