@@ -39,3 +39,22 @@ while(t--){
     dp=vvll(n,vll(4,-1));
     cout<<max(rec(0,1),max(rec(0,2),rec(0,3)))<<"\n";
 }}
+
+
+
+-------------------------------------------------------------------------------------
+    iterative
+    int main()
+{fast;
+    test{
+        ll n;
+        read(n);
+        vll toys(n+3);
+        read(toys,n);
+        vll dp(n+8);
+        forr(i,n){
+            dp[i]=toys[i]+max(dp[i+2],max(dp[i+4]+toys[i+1],dp[i+6]+toys[i+1]+toys[i+2]));
+        }
+        cout<<dp[0]<<"\n";
+    }
+}
