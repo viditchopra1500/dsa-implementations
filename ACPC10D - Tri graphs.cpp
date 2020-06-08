@@ -36,3 +36,40 @@ while(true){
     cout<<c<<". "<<rec(0,1)<<"\n";
     c++;
 }}
+
+
+*----------------------------------------------------------------------------------------iterative dp
+int main()
+{fast;ll c=1;
+    while(1){
+        ll n;
+        read(n);
+        if(n==0)
+            break;
+        else{
+            ll arr[n][3],dp[n][3];
+            forn(i,n){
+                forn(j,3){
+                    read(arr[i][j]);
+                }
+            }
+            dp[0][0]=MOD,dp[0][1]=arr[0][1],dp[0][2]=arr[0][2]+arr[0][1];
+            for1(i,n-1){
+                forn(j,3){
+                    ll a=dp[i-1][0],b=dp[i-1][1],c=dp[i-1][2];
+                    if(j==0){
+                        dp[i][0]=arr[i][j]+min(a,b);
+                    }
+                    if(j==1){
+                        dp[i][1]=arr[i][j]+min(a,min(b,min(dp[i][0],c)));
+                    }
+                    if(j==2){
+                        dp[i][2]=arr[i][j]+min(b,min(c,dp[i][1]));
+                    }
+                }
+            }
+            cout<<c<<". "<<dp[n-1][1]<<"\n";
+c++;
+        }
+    }
+}
