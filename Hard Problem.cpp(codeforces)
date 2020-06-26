@@ -1,0 +1,36 @@
+const ll N=1e5+5;
+ll dp[N][2];
+string s[N][2];
+// string r[N];
+ll n;
+ll c[N];
+ll rec(ll pos,ll cur)
+{
+    if(pos>=n-1)
+        return 0;
+    if(dp[pos][cur]!=-1)
+        return dp[pos][cur];
+    ll a=INF;
+        if(s[pos][cur]<=s[pos+1][0])
+            a=min(rec(pos+1,0),a);
+        if(s[pos][cur]<=s[pos+1][1])
+            a=min(rec(pos+1,1)+c[pos+1],a);
+    return dp[pos][cur]=a;
+}
+int main()
+{   fast;
+    read(n);
+    read(c,n);
+    forn(i,n){
+        read(s[i][0]);
+        s[i][1]=s[i][0];
+        reverse(all(s[i][1]));
+    }
+    ini(dp,-1);
+    ll a=rec(0,0);
+    ll b=rec(0,1)+c[0];
+    if(min(a,b)>=INF)
+        cout<<-1;
+    else
+    cout<<min(a,b);
+}
