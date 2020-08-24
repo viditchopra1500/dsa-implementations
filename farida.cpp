@@ -1,5 +1,5 @@
 iterative dp---------------------------------------------------------------------------
-int main()
+1)int main()
 {fast;
     ll c=1;
     test{
@@ -23,6 +23,27 @@ int main()
         c++;
     }}
     
+
+2)void solve(){
+    ll n;
+    read(n);
+    ll arr[n];
+    read(arr,n);
+    ll dp[n]={0};
+    //dp[i] is the max gold coins if we dont take from adjacent monsters.
+    dp[0]=arr[0];
+    if(n>1)
+    dp[1]=max(dp[0],arr[1]);
+    forn(i,n-1){
+        dp[i+1]=max(dp[i+1],dp[i]);
+        if(i<n-2)
+            dp[i+2]=max(dp[i+2],dp[i]+arr[i+2]);
+    }
+    if(n==0) cout<<0;
+    else
+    cout<<dp[n-1];en;
+}
+
     recursive sol--------------------------------------------------------------------------
     
     ll rec(ll i){
