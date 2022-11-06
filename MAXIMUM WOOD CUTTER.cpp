@@ -26,7 +26,9 @@ ll rec(ll i,ll j,ll dir){
             ma=max(ma,rec(i+1,j,0)+t);
         } 
     }
-    return dp[i][j][dir]=ma;    
+
+    return dp[i][j][dir]=ma;
+
 }
 
 int main()
